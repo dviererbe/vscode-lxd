@@ -1,0 +1,7 @@
+{
+    "vscode-lxd.commands.categories.generic": "LXD",
+    "vscode-lxd.commands.reportIssue": "Report an issue with the LXD extension...",
+    "vscode-lxd.views.activitybar": "LXD",
+    "vscode-lxd.views.instances": "Instances",
+    "vscode-lxd.views.help": "Help and Feedback"
+}

@@ -1,22 +1,22 @@
-// vscode-lxd    
+// vscode-lxd
 // Copyright (C) 2025 Dominik Viererbe <hello@dviererbe.de>
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Affero General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from "vscode";
 
-const LogLevelStrings: string[] = 
+const LogLevelStrings: string[] =
 [
     "TRACE",
     "DEBUG",
@@ -71,7 +71,7 @@ export class Logger implements vscode.Disposable
     {
         this.Log(message, LogLevel.Information);
     }
-    
+
     public LogWarning(message: string)
     {
         this.Log(message, LogLevel.Warning);
@@ -92,7 +92,7 @@ export class Logger implements vscode.Disposable
         this._outputChannel.show();
     }
 
-    public dispose() 
+    public dispose()
     {
         if (Logger._instance === this)
         {
@@ -128,7 +128,7 @@ export class Logger implements vscode.Disposable
     {
         this.Instance.Log(message, LogLevel.Information);
     }
-    
+
     public static LogWarning(message: string)
     {
         this.Instance.Log(message, LogLevel.Warning);
@@ -145,7 +145,7 @@ export class Logger implements vscode.Disposable
     }
 }
 
-export enum LogLevel 
+export enum LogLevel
 {
     Trace,
     Debug,

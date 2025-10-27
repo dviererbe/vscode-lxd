@@ -15,10 +15,10 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { LxdClient, LxdInstanceIdentifier } from "./LxdClient";
-import { EventEmitter } from "stream";
 import { Logger } from "../Logger";
+import * as constants from "../constants";
 
-export class LxdStateManager extends EventEmitter
+export class LxdStateManager
 {
     private static _instance?: LxdStateManager;
 
@@ -44,7 +44,6 @@ export class LxdStateManager extends EventEmitter
 
     private constructor(readonly client: LxdClient)
     {
-        super();
         this._client = client;
         this._instances = [];
     }
@@ -60,8 +59,6 @@ export class LxdStateManager extends EventEmitter
             this._instances = [];
             Logger.LogFatal("Failed to refresh propperly.");
         }
-
-        this.emit("refresh", this);
     }
 
     public get Instances(): LxdInstanceIdentifier[]

@@ -1,16 +1,16 @@
-// vscode-lxd    
+// vscode-lxd
 // Copyright (C) 2025 Dominik Viererbe <hello@dviererbe.de>
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Affero General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
@@ -24,7 +24,7 @@ export class LxdClient
     private constructor(readonly client: AxiosInstance)
     {
         this._client = client;
-    }    
+    }
 
     public static FromUnixDomainSocket(path: string): LxdClient
     {
@@ -32,7 +32,7 @@ export class LxdClient
         {
             baseURL: "http://lxd",
             socketPath: path,
-            headers: 
+            headers:
             {
               "Content-Type": "application/json",
             }
@@ -40,10 +40,10 @@ export class LxdClient
 
         return new LxdClient(client);
     }
-    
-    async GetInstances(options?: GetLxdInstancesOptions): Promise<LxdInstanceIdentifier[]> 
+
+    async GetInstances(options?: GetLxdInstancesOptions): Promise<LxdInstanceIdentifier[]>
     {
-        const requestOptions: AxiosRequestConfig = 
+        const requestOptions: AxiosRequestConfig =
         {
             method: "GET",
             url: "/1.0/instances",
@@ -68,11 +68,11 @@ export class LxdClient
 
         const response = await this.Request(requestOptions);
         const uris: string[] = response.metadata;
-        
+
         return uris.map(uri => {
             const prefix = "/1.0/instances/";
             const url = new URL(uri, this.client.defaults.baseURL)
-            
+
             if (!url.pathname.startsWith(prefix))
             {
                 throw new Error(`Instance uri (${uri}) does not start with '${prefix}'.`);
@@ -95,12 +95,12 @@ export class LxdClient
         const requestUri = this._client.getUri(requestOptions);
         let logMessage = `> ${requestOptions.method} ${requestUri}`;
         let response: AxiosResponse<LxdResponse>;
-        
-        try 
+
+        try
         {
             response = await this._client.request<LxdResponse>(requestOptions);
         }
-        catch (error) 
+        catch (error)
         {
             if (error instanceof Error)
             {
@@ -125,11 +125,11 @@ export class LxdClient
             {
                 logMessage += ` [${String(error)}]`;
             }
-            
+
             Logger.LogError(logMessage)
             throw error;
         }
-        
+
         logMessage += ` [${response.status} ${response.statusText}]`
         if (Logger.Instance.MinimalLogLevel == LogLevel.Trace && response.data)
         {
@@ -141,11 +141,11 @@ export class LxdClient
         {
             Logger.LogError(logMessage);
             throw new LxdClientError(
-                `LXD daemon returned an error response (${response.data.error_code}: ${response.data.error}). See response metadata for more details.`, 
+                `LXD daemon returned an error response (${response.data.error_code}: ${response.data.error}). See response metadata for more details.`,
                 requestUri,
                 response.data);
         }
-            
+
         Logger.LogDebug(logMessage);
         return response.data;
     }

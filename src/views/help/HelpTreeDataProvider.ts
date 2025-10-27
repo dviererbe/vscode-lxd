@@ -1,16 +1,16 @@
-// vscode-lxd    
+// vscode-lxd
 // Copyright (C) 2025 Dominik Viererbe <hello@dviererbe.de>
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU Affero General Public License as
 // published by the Free Software Foundation, either version 3 of the
 // License, or (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU Affero General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
@@ -19,7 +19,7 @@ import * as vscode from "vscode";
 export class HelpTreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem>
 {
     private _treeItems: vscode.TreeItem[];
-    
+
     constructor()
     {
         this._treeItems = [
@@ -36,14 +36,14 @@ export class HelpTreeDataProvider implements vscode.TreeDataProvider<vscode.Tree
                 "remote-explorer-documentation",
                 "https://documentation.ubuntu.com/lxd/latest/reference/manpages/lxc/"),
             CreateUrlTreeItem(
-                vscode.l10n.t("Review existing issues of the LXD extension"), 
-                "remote-explorer-review-issues", 
+                vscode.l10n.t("Review existing issues of the LXD extension"),
+                "remote-explorer-review-issues",
                 "https://github.com/dviererbe/vscode-lxd/issues"),
             CreateReportIssueTreeItem(),
         ];
     }
 
-    public getTreeItem(element: vscode.TreeItem): vscode.TreeItem | Thenable<vscode.TreeItem> 
+    public getTreeItem(element: vscode.TreeItem): vscode.TreeItem | Thenable<vscode.TreeItem>
     {
         return element;
     }
@@ -54,27 +54,25 @@ export class HelpTreeDataProvider implements vscode.TreeDataProvider<vscode.Tree
         {
             return [];
         }
-        else 
+        else
         {
             return this._treeItems;
         }
     }
 
-    public getParent(element: vscode.TreeItem): vscode.ProviderResult<vscode.TreeItem> 
+    public getParent(element: vscode.TreeItem): vscode.ProviderResult<vscode.TreeItem>
     {
-        return null;    
+        return null;
     }
 
     public resolveTreeItem(
-        item: vscode.TreeItem, 
-        element: vscode.TreeItem, 
+        item: vscode.TreeItem,
+        element: vscode.TreeItem,
         token: vscode.CancellationToken)
-        : vscode.ProviderResult<vscode.TreeItem> 
+        : vscode.ProviderResult<vscode.TreeItem>
     {
         return Promise.resolve(element);
     }
-
-    
 }
 
 function CreateUrlTreeItem(
@@ -92,8 +90,7 @@ function CreateUrlTreeItem(
     };
 
     return treeItem;
-}    
-
+}
 
 function CreateReportIssueTreeItem()
 {
@@ -107,4 +104,3 @@ function CreateReportIssueTreeItem()
 
     return treeItem;
 }
-

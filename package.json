@@ -33,7 +33,9 @@
         "containers"
     ],
     "pricing": "Free",
-    "activationEvents": [],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
     "main": "./dist/extension.js",
     "contributes": {
         "commands": [
@@ -100,6 +102,7 @@
         "@typescript-eslint/parser": "^8.45.0",
         "@vscode/test-cli": "^0.0.11",
         "@vscode/test-electron": "^2.5.2",
+        "@vscode/vsce": "^3.6.2",
         "eslint": "^9.36.0",
         "ts-loader": "^9.5.4",
         "typescript": "^5.9.3",

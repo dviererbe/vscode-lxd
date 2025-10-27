@@ -1,4 +1,4 @@
-# LXD Extension for Visual Studio Code
+# LXD Extension for Visual Studio Code [![License: GNU Affero General Public License v3.0 or later](https://img.shields.io/badge/License-AGPL--3.0--or--later-informational)](https://github.com/dviererbe/vscode-lxd/blob/main/LICENSE.md)
 
 This Extension for Visual Studio Code makes it easy to create, manage, and inspect [LXD](https://canonical.com/lxd) containers.
 

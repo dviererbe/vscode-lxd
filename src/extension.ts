@@ -17,28 +17,33 @@
 import * as vscode from 'vscode';
 import { RegisterViews } from './views/RegisterViews';
 import { RegisterCommands } from './commands/RegisterCommands';
-import { Logger, LogLevel } from "./Logger";
-import { LxdStateManager } from './lxd/LxdStateManager';
+import { LxdService } from './lxd/LxdService';
+import { ExtensionVariables } from "./ExtensionVariables";
+import { EXTENSION_DISPLAY_NAME } from './Constants';
 
 export async function activate(context: vscode.ExtensionContext)
 {
-	Logger.LogDebug("extension activated");
-	if (context.extensionMode === vscode.ExtensionMode.Development)
-	{
-		Logger.Instance.MinimalLogLevel = LogLevel.Trace;
-		Logger.Instance.ShowLogs();
-	}
-
-	LxdStateManager.Initialize();
+    InitializeLogger(context);
+    ExtensionVariables.LxdService = new LxdService();
 
 	RegisterCommands(context);
 	RegisterViews(context);
-
 }
 
 export function deactivate()
 {
-	Logger.LogDebug("extension deactivated");
-	// ensure that this is the last thing that gets disposed
-	Logger.Instance.dispose();
+    ExtensionVariables.LxdService.dispose();
+    ExtensionVariables.Logger.dispose();
+}
+
+function InitializeLogger(context: vscode.ExtensionContext)
+{
+    ExtensionVariables.Logger = vscode.window.createOutputChannel(
+        EXTENSION_DISPLAY_NAME, // name
+        { log: true }); // options
+
+    if (context.extensionMode === vscode.ExtensionMode.Development)
+    {
+        ExtensionVariables.Logger.show();
+    }
 }

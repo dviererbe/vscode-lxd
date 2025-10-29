@@ -15,18 +15,21 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Logger, LogLevel } from "../Logger";
+import { Disposable } from '../Disposable';
+import { ExtensionVariables } from '../ExtensionVariables';
+import { LogLevel } from 'vscode';
 
-export class LxdClient
+export class LxdClient extends Disposable
 {
     private readonly _client: AxiosInstance;
 
     private constructor(readonly client: AxiosInstance)
     {
+        super();
         this._client = client;
     }
 
-    public static FromUnixDomainSocket(path: string): LxdClient
+    public static FromUnixSocket(path: string): LxdClient
     {
         const client = axios.create(
         {
@@ -126,12 +129,12 @@ export class LxdClient
                 logMessage += ` [${String(error)}]`;
             }
 
-            Logger.LogError(logMessage)
+            ExtensionVariables.Logger.error(logMessage);
             throw error;
         }
 
         logMessage += ` [${response.status} ${response.statusText}]`
-        if (Logger.Instance.MinimalLogLevel == LogLevel.Trace && response.data)
+        if (response.data && ExtensionVariables.Logger.logLevel == LogLevel.Trace)
         {
             // this method gets called a lot, so only generate the json string if neccessery:
             logMessage += `\n${JSON.stringify(response.data, null, 4)}`;
@@ -139,14 +142,14 @@ export class LxdClient
 
         if (response.data.type === "error" && throwOnError)
         {
-            Logger.LogError(logMessage);
+            ExtensionVariables.Logger.error(logMessage);
             throw new LxdClientError(
                 `LXD daemon returned an error response (${response.data.error_code}: ${response.data.error}). See response metadata for more details.`,
                 requestUri,
                 response.data);
         }
 
-        Logger.LogDebug(logMessage);
+        ExtensionVariables.Logger.debug(logMessage);
         return response.data;
     }
 }

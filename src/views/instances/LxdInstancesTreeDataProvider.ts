@@ -15,26 +15,26 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from "vscode";
-import { LxdInstanceIdentifier } from "../../lxd/LxdClient";
-import { LxdStateManager } from "../../lxd/LxdStateManager";
+import { ILxdInstance } from "../../lxd/LxdService";
+import { ExtensionVariables } from "../../ExtensionVariables";
 
-export class LxdInstancesTreeDataProvider implements vscode.TreeDataProvider<LxdInstanceIdentifier>
+export class LxdInstancesTreeDataProvider implements vscode.TreeDataProvider<ILxdInstance>
 {
-    private readonly _onDidChangeTreeData: vscode.EventEmitter<LxdInstanceIdentifier[]>;
-    public readonly onDidChangeTreeData: vscode.Event<LxdInstanceIdentifier[]>;
+    private readonly _onDidChangeTreeData: vscode.EventEmitter<ILxdInstance[]>;
+    public readonly onDidChangeTreeData: vscode.Event<ILxdInstance[]>;
 
     constructor()
     {
-        this._onDidChangeTreeData = new vscode.EventEmitter<LxdInstanceIdentifier[]>();
+        this._onDidChangeTreeData = new vscode.EventEmitter<ILxdInstance[]>();
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
     }
 
-    getTreeItem(element: LxdInstanceIdentifier): vscode.TreeItem
+    public getTreeItem(element: ILxdInstance): vscode.TreeItem
     {
         return new vscode.TreeItem(element.Name);
     }
 
-    getChildren(element?: LxdInstanceIdentifier | undefined): vscode.ProviderResult<LxdInstanceIdentifier[]>
+    public getChildren(element?: ILxdInstance | undefined): vscode.ProviderResult<ILxdInstance[]>
     {
         if (element)
         {
@@ -42,24 +42,21 @@ export class LxdInstancesTreeDataProvider implements vscode.TreeDataProvider<Lxd
         }
         else
         {
-            return LxdStateManager.Instance.Instances;
+            return ExtensionVariables.LxdService.GetInstances();
         }
     }
 
-    getParent(element: LxdInstanceIdentifier): vscode.ProviderResult<LxdInstanceIdentifier>
+    public getParent(element: ILxdInstance): vscode.ProviderResult<ILxdInstance>
     {
         return null;
     }
 
-    resolveTreeItem(
+    public resolveTreeItem(
         item: vscode.TreeItem,
-        element: LxdInstanceIdentifier,
+        element: ILxdInstance,
         token: vscode.CancellationToken):
         vscode.ProviderResult<vscode.TreeItem>
     {
         return item;
     }
-
-
-
 }

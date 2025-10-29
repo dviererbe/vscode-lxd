@@ -46,6 +46,25 @@
                 "icon": "$(remote-explorer-report-issues)"
             }
         ],
+        "configuration": [
+            {
+                "title": "%vscode-lxd.configuration.title%",
+                "properties": {
+                    "lxd.daemonUnixSocketPath": {
+                        "title": "daemon",
+                        "type": "string",
+                        "default": "",
+                        "scope": "machine",
+                        "markdownDescription": "sdasd"
+                    },
+                    "lxd.suppressUnsupportedEnvironmentErrors": {
+                        "type": "boolean",
+                        "default": false,
+                        "scope": "window"
+                    }
+                }
+            }
+        ],
         "menus": {
             "issue/reporter": [
                 {

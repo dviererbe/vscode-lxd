@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from 'vscode';
-import * as constants from "../constants";
+import * as constants from "../Constants";
 
 export function RegisterCommands(context: vscode.ExtensionContext)
 {

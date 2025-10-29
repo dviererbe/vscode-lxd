@@ -15,3 +15,13 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 export const EXTENSION_ID = "dviererbe.vscode-lxd";
+export const EXTENSION_NAME = "vscode-lxd";
+export const EXTENSION_DISPLAY_NAME = "LXD";
+
+export namespace ConfigKeys
+{
+    export const NAMESPACE = "lxd";
+
+    export const LXD_DAEMON_SOCKET_PATH = "daemonUnixSocketPath";
+    export const SUPPRESS_UNSUPPORTED_ENVIRONMENT_ERRORS = "suppressUnsupportedEnvironmentErrors";
+};

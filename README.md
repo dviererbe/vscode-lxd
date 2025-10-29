@@ -1,4 +1,4 @@
-# LXD Extension for Visual Studio Code [![License: GNU Affero General Public License v3.0 or later](https://img.shields.io/badge/License-AGPL--3.0--or--later-informational)](https://github.com/dviererbe/vscode-lxd/blob/main/LICENSE.md)
+# LXD Extension for Visual Studio Code [![License: GNU Affero General Public License v3.0 or later](https://img.shields.io/badge/License-AGPL--3.0--or--later-informational)](https://github.com/dviererbe/vscode-lxd/blob/main/LICENSE.md) [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/dviererbe.vscode-lxd?label=VS%20Code%20Marketplace)](https://open-vsx.org/extension/dviererbe/vscode-lxd) [![VS Code Marketplace](https://img.shields.io/open-vsx/v/dviererbe/vscode-lxd?logo=vscodium&label=Open%20VSX%20Registry)](https://marketplace.visualstudio.com/items?itemName=dviererbe.vscode-lxd)
 
 This Extension for Visual Studio Code makes it easy to create, manage, and inspect [LXD](https://canonical.com/lxd) containers.
 

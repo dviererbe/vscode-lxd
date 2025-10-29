@@ -1,0 +1,120 @@
+name: Create a release when a tag is pushed
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.check-version.outputs.version }}
+      preview: ${{ steps.check-version.outputs.preview }}
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v4
+      - name: check version
+        id: check-version
+        run: |
+          VERSION="$(jq -r '.version' package.json)"
+          echo "$VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          
+          PREVIEW="$(jq -r '.preview' package.json)"
+          echo "$PREVIEW"
+          echo "preview=$PREVIEW" >> $GITHUB_OUTPUT
+
+          VERSION_TAG_HASH="$(git rev-list -n 1 "v$VERSION")"
+          echo "$VERSION_TAG_HASH"
+
+          HEAD_HASH="$(git rev-list -n 1 HEAD)"
+          echo "$HEAD_HASH"
+
+          [ "$VERSION_TAG_HASH" == "$HEAD_HASH" ]
+      - name: extract version changelog section
+        run: eng/extract-chagelog-section.py "${{ steps.check-version.outputs.version}}" | tee changes.md
+      - name: install node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+      - name: log depenency versions
+        run: |
+          node --version
+          npm -v
+      - name: install npm dependencies
+        run: npm install
+      - name: run linter
+        run: npm run lint
+      - name: build vsix package
+        run: npm exec -- vsce package --no-dependencies
+      - name: upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-files
+          path: |
+            vscode-lxd-${{ steps.check-version.outputs.version}}.vsix
+            changes.md
+  github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+      discussions: write
+    steps:
+      - name: download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: release-files
+      - name: create GitHub release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          tag_name: v${{needs.build.outputs.version}}
+          name: Version ${{needs.build.outputs.version}}
+          body_path: changes.md
+          draft: true
+          prerelease: ${{needs.build.outputs.preview == "true"}}
+          discussion_category_name: announcements
+      - name: upload release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: vscode-lxd-${{needs.build.outputs.version}}.vsix
+          asset_name: vscode-lxd-${{needs.build.outputs.version}}.vsix
+          asset_content_type: application/zip
+  vscode-marketplace-release:
+    name: Publish to Marketplace
+    runs-on: ubuntu-latest
+    needs: build
+    strategy:
+      matrix:
+        publisher: ["@vscode/vsce", "ovsx"]
+    steps:
+      - name: download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: release-files
+      - name: install node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: log depenency versions
+        run: |
+          node --version
+          npm -v
+      - name: set VSCE_PAT # set Personal Access Token for https://dev.azure.com/dviererbe
+        if: ${{matrix.publisher == "@vscode/vsce"}}
+        run: echo "VSCE_PAT=${{secrets.VSCE_PAT}}" >> ${GITHUB_ENV}
+      - name: set OVSX_PAT # set Personal Access Token for https://open-vsx.org/
+        if: ${{matrix.publisher == "osvx"}}
+        run: echo "OVSX_PAT=${{secrets.OVSX_PAT}}" >> ${GITHUB_ENV}
+      - name: publish to VS Code marketplace
+        run: npx ${{matrix.publisher}} publish --packagePath vscode-lxd-${{needs.build.outputs.version}}.vsix

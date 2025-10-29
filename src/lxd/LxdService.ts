@@ -21,7 +21,7 @@ import fs from "fs";
 import { ConfigKeys } from "../Constants";
 import { Disposable } from "../Disposable";
 import { LxdClient } from "./LxdClient";
-import { ExtensionVariables } from "../ExtensionVariables"
+import { ExtensionVariables } from "../ExtensionVariables";
 
 export class LxdService extends Disposable
 {
@@ -102,13 +102,15 @@ export class LxdService extends Disposable
                 "Could not find LXD unix-socket '{0}'.",
                 lxdUnixSocketPath);
             vscode.window.showErrorMessage(
-                vscode.l10n.t("Could not find LXD unix-socket. Either LXD is not running or not installed."),
+                vscode.l10n.t("Could not find LXD unix-socket. " +
+                              "Either LXD is not running or not installed."),
                 vscode.l10n.t("Install instructions"))
             .then(userSelection =>
             {
                 if (userSelection)
                 {
-                    vscode.env.openExternal(vscode.Uri.parse("https://documentation.ubuntu.com/lxd/latest/installing/"));
+                    vscode.env.openExternal(vscode.Uri.parse(
+                        "https://documentation.ubuntu.com/lxd/latest/installing/"));
                 }
             });
             return;
@@ -175,7 +177,7 @@ export class LxdService extends Disposable
     {
         if (this.IsDisposed) return;
 
-        if (this._client == null)
+        if (this._client === null)
         {
             this._instances = [];
             return;

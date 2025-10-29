@@ -50,31 +50,16 @@ export class LxdClient extends Disposable
         {
             method: "GET",
             url: "/1.0/instances",
-            params: {},
+            params: options,
         };
-
-        if (options)
-        {
-            if (options.AllProjects)
-            {
-                requestOptions.params["all-projects"] = "true";
-            }
-            if (options.Project)
-            {
-                requestOptions.params["project"] = options.Project;
-            }
-            if (options.Filter)
-            {
-                requestOptions.params["filter"] = options.Filter;
-            }
-        }
 
         const response = await this.Request(requestOptions);
         const uris: string[] = response.metadata;
 
-        return uris.map(uri => {
+        return uris.map(uri =>
+        {
             const prefix = "/1.0/instances/";
-            const url = new URL(uri, this.client.defaults.baseURL)
+            const url = new URL(uri, this.client.defaults.baseURL);
 
             if (!url.pathname.startsWith(prefix))
             {
@@ -133,8 +118,8 @@ export class LxdClient extends Disposable
             throw error;
         }
 
-        logMessage += ` [${response.status} ${response.statusText}]`
-        if (response.data && ExtensionVariables.Logger.logLevel == LogLevel.Trace)
+        logMessage += ` [${response.status} ${response.statusText}]`;
+        if (response.data && ExtensionVariables.Logger.logLevel === LogLevel.Trace)
         {
             // this method gets called a lot, so only generate the json string if neccessery:
             logMessage += `\n${JSON.stringify(response.data, null, 4)}`;
@@ -169,9 +154,9 @@ export class LxdClientError extends Error
 
 export interface GetLxdInstancesOptions
 {
-    readonly AllProjects?: boolean;
-    readonly Project?: string;
-    readonly Filter?: string;
+    readonly "all-projects"?: boolean;
+    readonly "project"?: string;
+    readonly "filter"?: string;
 }
 
 export interface LxdInstanceIdentifier

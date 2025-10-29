@@ -30,10 +30,12 @@ export abstract class Disposable implements vscode.Disposable
 
         for (const disposable of this._disposables)
         {
-            try {
+            try
+            {
                 disposable.dispose();
             }
-            catch (error) {
+            catch (error)
+            {
                 errors.push(error);
             }
         }

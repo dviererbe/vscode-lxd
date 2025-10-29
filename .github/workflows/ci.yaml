@@ -1,0 +1,31 @@
+name: Continuous Integration Workflow
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+  workflow_dispatch:
+
+jobs:
+  lint-and-build:
+    name: lint and build source
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v4
+      - name: install node.js
+        uses: actions/setup-node@v6
+        node-version-file: '.nvmrc'
+      - name: log versions
+        run: |
+          node --version
+          npm -v
+      - name: install npm dependencies
+        run: npm install
+      - name: run linter
+        run: npm run lint
+      - name: build vsix package
+        run: npm exec -- vsce package --no-dependencies

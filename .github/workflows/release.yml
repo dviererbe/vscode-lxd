@@ -79,7 +79,7 @@ jobs:
           name: Version ${{needs.build.outputs.version}}
           body_path: changes.md
           draft: true
-          prerelease: ${{needs.build.outputs.preview == "true"}}
+          prerelease: ${{needs.build.outputs.preview == 'true'}}
           discussion_category_name: announcements
       - name: upload release asset
         uses: actions/upload-release-asset@v1
@@ -96,7 +96,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        publisher: ["@vscode/vsce", "ovsx"]
+        publisher: ['@vscode/vsce', 'ovsx']
     steps:
       - name: download build artifacts
         uses: actions/download-artifact@v5
@@ -111,10 +111,10 @@ jobs:
           node --version
           npm -v
       - name: set VSCE_PAT # set Personal Access Token for https://dev.azure.com/dviererbe
-        if: ${{matrix.publisher == "@vscode/vsce"}}
+        if: ${{matrix.publisher == '@vscode/vsce'}}
         run: echo "VSCE_PAT=${{secrets.VSCE_PAT}}" >> ${GITHUB_ENV}
       - name: set OVSX_PAT # set Personal Access Token for https://open-vsx.org/
-        if: ${{matrix.publisher == "osvx"}}
+        if: ${{matrix.publisher == 'osvx'}}
         run: echo "OVSX_PAT=${{secrets.OVSX_PAT}}" >> ${GITHUB_ENV}
       - name: publish to VS Code marketplace
         run: npx ${{matrix.publisher}} publish --packagePath vscode-lxd-${{needs.build.outputs.version}}.vsix

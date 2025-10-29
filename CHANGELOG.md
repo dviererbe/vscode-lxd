@@ -5,9 +5,24 @@ All notable changes to the VS Code LXD extension will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.2]
 
-asda
+<!-- ## [Unreleased] -->
+
+## [0.0.2] - 30 October 2025
+
+### Added
+
+- handle unsupported environments (e.g. windows, macOS, web)
+- custom LXD daemon unix socket path can be set with the configuration property `lxd.daemonUnixSocketPath`
+- search for LXD daemon unix socket at
+  1. `$LXD_DIR/unix.socket`
+  2. `/var/snap/lxd/common/lxd/unix.socket`
+  3. `/var/lib/lxd/unix.socket`
+
+### Changed
+
+- use VS Code build-in logger
+- minor code cleanup's
 
 ## [0.0.1] - 27 October 2025
 
@@ -15,4 +30,7 @@ asda
 
 A simple proof of concept that can lists all LXD instances.
 
+
+<!--[unreleased]: https://github.com/dviererbe/vscode-lxd/compare/v0.0.2...HEAD -->
+[0.0.2]: https://github.com/dviererbe/vscode-lxd/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/dviererbe/vscode-lxd/releases/tag/v0.0.1

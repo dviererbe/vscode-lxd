@@ -25,6 +25,10 @@ export function RegisterCommands(context: vscode.ExtensionContext)
         RefreshInstances));
 
     context.subscriptions.push(vscode.commands.registerCommand(
+        "vscode-lxd.commands.refreshImages",
+        RefreshImages));
+
+    context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.reportIssue",
         ReportIssue));
 
@@ -57,6 +61,11 @@ async function OpenUrl(url: string)
 }
 
 async function RefreshInstances()
+{
+    await ExtensionVariables.LxdService.Refresh();
+}
+
+async function RefreshImages()
 {
     await ExtensionVariables.LxdService.Refresh();
 }

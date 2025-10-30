@@ -17,20 +17,28 @@
 import * as vscode from 'vscode';
 import { HelpTreeDataProvider } from './help/HelpTreeDataProvider';
 import { LxdInstancesTreeDataProvider } from './instances/LxdInstancesTreeDataProvider';
+import { LxdImagesTreeDataProvider } from './images/LxdImagesTreeDataProvider';
 
 export function RegisterViews(context: vscode.ExtensionContext)
 {
-	context.subscriptions.push(vscode.window.createTreeView(
-		"vscode-lxd.views.help",
-		{
-			treeDataProvider: new HelpTreeDataProvider(),
-			canSelectMany: false,
-		}));
+    context.subscriptions.push(vscode.window.createTreeView(
+    "vscode-lxd.views.instances",
+    {
+        treeDataProvider: new LxdInstancesTreeDataProvider(),
+        canSelectMany: false,
+    }));
 
-	context.subscriptions.push(vscode.window.createTreeView(
-		"vscode-lxd.views.instances",
-		{
-			treeDataProvider: new LxdInstancesTreeDataProvider(),
-			canSelectMany: false,
-		}));
+    context.subscriptions.push(vscode.window.createTreeView(
+    "vscode-lxd.views.images",
+    {
+        treeDataProvider: new LxdImagesTreeDataProvider(),
+        canSelectMany: false,
+    }));
+
+    context.subscriptions.push(vscode.window.createTreeView(
+    "vscode-lxd.views.help",
+    {
+        treeDataProvider: new HelpTreeDataProvider(),
+        canSelectMany: false,
+    }));
 }

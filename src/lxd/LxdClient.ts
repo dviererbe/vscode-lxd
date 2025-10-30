@@ -18,7 +18,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Disposable } from '../Disposable';
 import { ExtensionVariables } from '../ExtensionVariables';
 import { LogLevel } from 'vscode';
-import { ILxdInstance } from './LxdService';
+import { ILxdImage, ILxdInstance } from './LxdService';
 
 export class LxdClient extends Disposable
 {
@@ -64,6 +64,30 @@ export class LxdClient extends Disposable
             {
                 Name: response.metadata.name,
                 Status: response.metadata.status,
+            };
+
+            return instance;
+        });
+    }
+
+    async GetImages(options?: GetLxdInstancesOptions): Promise<ILxdImage[]>
+    {
+        const requestOptions: AxiosRequestConfig =
+        {
+            method: "GET",
+            url: "/1.0/images",
+            params: options,
+        };
+
+        const response = await this.Request(requestOptions);
+        const promises: Promise<LxdResponse>[] = response.metadata.map((uri: string) => this.Request({method: "GET", url: uri}));
+
+        var responses = await Promise.all(promises);
+        return responses.map(response =>
+        {
+            const instance: ILxdImage =
+            {
+                Fingerprint: response.metadata.fingerprint,
             };
 
             return instance;

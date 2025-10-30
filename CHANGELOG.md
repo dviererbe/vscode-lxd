@@ -10,9 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Instance view displays instance status
-- Instance view is refreshed every 15 seconds.
-- Refresh intervall can be configured via the `lxd.refreshInterval` property-
+- Instance explorer displays instance status
+- Instance explorer is refreshed every 15 seconds.
+- Refresh intervall can be configured via the `lxd.refreshInterval` property.
+- LXD images explorer.
 
 ### Fixed
 

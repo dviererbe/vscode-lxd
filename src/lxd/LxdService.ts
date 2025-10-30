@@ -26,9 +26,14 @@ import { ExtensionVariables } from "../ExtensionVariables";
 export class LxdService extends Disposable
 {
     private _client: LxdClient | null = null;
-    private _instances: ILxdInstance[];
+    private _instances: ILxdInstance[] = [];
+    private _images: ILxdImage[] = [];
+
     private readonly _onDidChangeInstances: vscode.EventEmitter<ILxdInstance[]>;
     public readonly OnDidChangeInstances: vscode.Event<ILxdInstance[]>;
+
+    private readonly _onDidChangeImages: vscode.EventEmitter<ILxdImage[]>;
+    public readonly OnDidChangeImages: vscode.Event<ILxdImage[]>;
 
     public constructor()
     {
@@ -41,9 +46,11 @@ export class LxdService extends Disposable
             this) // thisArgs
         );
 
-        this._instances = [];
         this._onDidChangeInstances = this.RegisterDisposable(new vscode.EventEmitter<ILxdInstance[]>());
         this.OnDidChangeInstances = this._onDidChangeInstances.event;
+
+        this._onDidChangeImages = this.RegisterDisposable(new vscode.EventEmitter<ILxdImage[]>());
+        this.OnDidChangeImages = this._onDidChangeImages.event;
 
         this.Refresh();
     }
@@ -186,12 +193,18 @@ export class LxdService extends Disposable
         if (this._client === null)
         {
             this._instances = [];
+            this._images = [];
+
             return;
         }
 
         this._instances = await this._client.GetInstances();
         ExtensionVariables.Logger.info(JSON.stringify(this._instances));
         this._onDidChangeInstances.fire(this._instances);
+
+        this._images = await this._client.GetImages();
+        ExtensionVariables.Logger.info(JSON.stringify(this._images));
+        this._onDidChangeImages.fire(this._images);
 
         let refreshIntervall =
             vscode.workspace
@@ -205,10 +218,20 @@ export class LxdService extends Disposable
     {
         return this._instances;
     }
+
+    public GetImages(): ILxdImage[]
+    {
+        return this._images;
+    }
 }
 
 export interface ILxdInstance
 {
     readonly Name: string;
     readonly Status: string;
+}
+
+export interface ILxdImage
+{
+    readonly Fingerprint: string;
 }

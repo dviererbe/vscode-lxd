@@ -6,7 +6,7 @@ This Extension for Visual Studio Code makes it easy to create, manage, and inspe
 
 ### LXD Explorer
 
-This extension contributes an LXD Explorer view to VS Code. The LXD Explorer lets you examine and manage LXD-related assets: instances.
+This extension contributes an LXD Explorer view to VS Code. The LXD Explorer lets you examine and manage LXD-related assets: instances, images.
 
 ![Screenshot of the LXD Explorer](resources/readme/lxd-explorer-view.png)
 

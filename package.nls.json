@@ -5,9 +5,12 @@
     "vscode-lxd.configuration.properties.refreshInterval.description": "The time interval, in seconds, at which the data or view should be automatically refreshed.",
     "vscode-lxd.commands.categories.generic": "LXD",
     "vscode-lxd.commands.categories.instances": "LXD Instances",
+    "vscode-lxd.commands.categories.images": "LXD Images",
     "vscode-lxd.commands.refreshInstances": "Refresh",
+    "vscode-lxd.commands.refreshImages": "Refresh",
     "vscode-lxd.commands.reportIssue": "Report an issue with the LXD extension...",
     "vscode-lxd.views.activitybar": "LXD",
     "vscode-lxd.views.instances": "Instances",
+    "vscode-lxd.views.images": "Images",
     "vscode-lxd.views.help": "Help and Feedback"
 }

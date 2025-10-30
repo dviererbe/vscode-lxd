@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Instance explorer is refreshed every 15 seconds.
 - Refresh intervall can be configured via the `lxd.refreshInterval` property.
 
+### Changed
+
+- updated screenshot in readme
+
 ### Fixed
 
 - Readme version badge links were swapped.

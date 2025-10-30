@@ -33,6 +33,10 @@ export function RegisterCommands(context: vscode.ExtensionContext)
         () => ExtensionVariables.LxdService.RefreshNetworks()));
 
     context.subscriptions.push(vscode.commands.registerCommand(
+        "vscode-lxd.commands.refreshStoragePools",
+        () => ExtensionVariables.LxdService.RefreshStoragePools()));
+
+    context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.reportIssue",
         ReportIssue));
 

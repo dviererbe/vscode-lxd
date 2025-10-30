@@ -19,6 +19,7 @@ import { HelpTreeDataProvider } from './help/HelpTreeDataProvider';
 import { LxdInstancesTreeDataProvider } from './instances/LxdInstancesTreeDataProvider';
 import { LxdImagesTreeDataProvider } from './images/LxdImagesTreeDataProvider';
 import { LxdNetworkTreeDataProvider } from './networks/LxdNetworksTreeDataProvider';
+import { LxdStoragePoolsTreeDataProvider } from './storage/LxdNetworksTreeDataProvider';
 
 export function RegisterViews(context: vscode.ExtensionContext)
 {
@@ -40,6 +41,13 @@ export function RegisterViews(context: vscode.ExtensionContext)
     "vscode-lxd.views.networks",
     {
         treeDataProvider: new LxdNetworkTreeDataProvider(),
+        canSelectMany: false,
+    }));
+
+    context.subscriptions.push(vscode.window.createTreeView(
+    "vscode-lxd.views.storagePools",
+    {
+        treeDataProvider: new LxdStoragePoolsTreeDataProvider(),
         canSelectMany: false,
     }));
 

@@ -58,6 +58,12 @@
                 "icon": "$(extensions-refresh)"
             },
             {
+                "command": "vscode-lxd.commands.refreshStoragePools",
+                "title": "%vscode-lxd.commands.refreshStoragePools%",
+                "category": "%vscode-lxd.commands.categories.storagePools%",
+                "icon": "$(extensions-refresh)"
+            },
+            {
                 "command": "vscode-lxd.commands.reportIssue",
                 "title": "%vscode-lxd.commands.reportIssue%",
                 "category": "%vscode-lxd.commands.categories.generic%",
@@ -110,6 +116,11 @@
                     "command": "vscode-lxd.commands.refreshNetworks",
                     "when": "view == vscode-lxd.views.networks",
                     "group": "navigation"
+                },
+                {
+                    "command": "vscode-lxd.commands.refreshStoragePools",
+                    "when": "view == vscode-lxd.views.storagePools",
+                    "group": "navigation"
                 }
             ]
         },
@@ -137,7 +148,14 @@
                 {
                     "id": "vscode-lxd.views.networks",
                     "name": "%vscode-lxd.views.networks%",
-                    "icon": "resources/lxd-logo-outline.svg"
+                    "icon": "resources/lxd-logo-outline.svg",
+                    "visibility": "collapsed"
+                },
+                {
+                    "id": "vscode-lxd.views.storagePools",
+                    "name": "%vscode-lxd.views.storagePools%",
+                    "icon": "resources/lxd-logo-outline.svg",
+                    "visibility": "collapsed"
                 },
                 {
                     "id": "vscode-lxd.views.help",

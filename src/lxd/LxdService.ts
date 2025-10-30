@@ -39,6 +39,9 @@ export class LxdService extends Disposable
     private readonly _onDidChangeNetworks: vscode.EventEmitter<ILxdNetwork[]>;
     public readonly OnDidChangeNetworks: vscode.Event<ILxdNetwork[]>;
 
+    private _storagePools: ILxdStoragePool[] = [];
+    private readonly _onDidChangeStoragePools: vscode.EventEmitter<ILxdStoragePool[]>;
+    public readonly OnDidChangeStoragePools: vscode.Event<ILxdStoragePool[]>;
 
     public constructor()
     {
@@ -59,6 +62,9 @@ export class LxdService extends Disposable
 
         this._onDidChangeNetworks = this.RegisterDisposable(new vscode.EventEmitter<ILxdNetwork[]>());
         this.OnDidChangeNetworks = this._onDidChangeNetworks.event;
+
+        this._onDidChangeStoragePools = this.RegisterDisposable(new vscode.EventEmitter<ILxdStoragePool[]>());
+        this.OnDidChangeStoragePools = this._onDidChangeStoragePools.event;
 
         this.Refresh();
     }
@@ -233,6 +239,19 @@ export class LxdService extends Disposable
         this.Networks = await this._client.GetNetworks();
     }
 
+    public async RefreshStoragePools()
+    {
+        if (this.IsDisposed) return;
+
+        if (this._client === null)
+        {
+            this.StoragePools = [];
+            return;
+        }
+
+        this.StoragePools = await this._client.GetStoragePools();
+    }
+
     public async Refresh()
     {
         if (this.IsDisposed) return;
@@ -241,6 +260,7 @@ export class LxdService extends Disposable
             this.RefreshInstances(),
             this.RefreshImages(),
             this.RefreshNetworks(),
+            this.RefreshStoragePools(),
         ];
 
         await Promise.all(promises);
@@ -288,6 +308,18 @@ export class LxdService extends Disposable
         ExtensionVariables.Logger.info("networks updated: " + JSON.stringify(this._networks, null, 4));
         this._onDidChangeNetworks.fire(this._networks);
     }
+
+    public get StoragePools(): ILxdStoragePool[]
+    {
+        return this._storagePools;
+    }
+
+    private set StoragePools(storagePools: ILxdStoragePool[])
+    {
+        this._storagePools = storagePools;
+        ExtensionVariables.Logger.info("storage-pools updated: " + JSON.stringify(this._storagePools, null, 4));
+        this._onDidChangeStoragePools.fire(this._storagePools);
+    }
 }
 
 export interface ILxdInstance
@@ -302,6 +334,11 @@ export interface ILxdImage
 }
 
 export interface ILxdNetwork
+{
+    readonly Name: string;
+}
+
+export interface ILxdStoragePool
 {
     readonly Name: string;
 }

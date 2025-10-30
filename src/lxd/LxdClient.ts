@@ -18,7 +18,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Disposable } from '../Disposable';
 import { ExtensionVariables } from '../ExtensionVariables';
 import { LogLevel } from 'vscode';
-import { ILxdImage, ILxdInstance, ILxdNetwork } from './LxdService';
+import { ILxdImage, ILxdInstance, ILxdNetwork, ILxdStoragePool } from './LxdService';
 
 export class LxdClient extends Disposable
 {
@@ -110,6 +110,30 @@ export class LxdClient extends Disposable
         return responses.map(response =>
         {
             const instance: ILxdNetwork =
+            {
+                Name: response.metadata.name,
+            };
+
+            return instance;
+        });
+    }
+
+    async GetStoragePools(options?: GetLxdInstancesOptions): Promise<ILxdStoragePool[]>
+    {
+        const requestOptions: AxiosRequestConfig =
+        {
+            method: "GET",
+            url: "/1.0/storage-pools",
+            params: options,
+        };
+
+        const response = await this.Request(requestOptions);
+        const promises: Promise<LxdResponse>[] = response.metadata.map((uri: string) => this.Request({method: "GET", url: uri}));
+
+        var responses = await Promise.all(promises);
+        return responses.map(response =>
+        {
+            const instance: ILxdStoragePool =
             {
                 Name: response.metadata.name,
             };

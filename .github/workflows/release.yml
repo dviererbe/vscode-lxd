@@ -84,7 +84,7 @@ jobs:
           GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           GH_OPTIONS=""
-          if [ "${{needs.build.outputs.preview }}" == true ]; then
+          if [ "${{needs.build.outputs.preview }}" == "true" ]; then
             GH_OPTIONS="$GH_OPTIONS --prerelease"
           fi
           
@@ -100,7 +100,7 @@ jobs:
             --title "$RELEASE_TITLE" \
             --notes-file changes.md \
             --discussion-category "Announcements" \
-            "$GH_OPTIONS"
+            $GH_OPTIONS
 
   extension-registry-release:
     name: Publish to Extension Registry

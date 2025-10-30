@@ -100,6 +100,7 @@ jobs:
             --title "$RELEASE_TITLE" \
             --notes-file changes.md \
             --discussion-category "Announcements" \
+            --repo "${{github.repository}}" \
             $GH_OPTIONS
 
   extension-registry-release:

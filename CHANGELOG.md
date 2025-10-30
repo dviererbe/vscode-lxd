@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Instance explorer displays instance status
 - Instance explorer is refreshed every 15 seconds.
 - Refresh intervall can be configured via the `lxd.refreshInterval` property.
+- Refresh commands for instances, images, networks, storage & all.
 
 ### Changed
 

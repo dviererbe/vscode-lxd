@@ -8,6 +8,7 @@
     "vscode-lxd.commands.categories.images": "LXD Images",
     "vscode-lxd.commands.categories.networks": "LXD Networks",
     "vscode-lxd.commands.categories.storagePools": "LXD Storage",
+    "vscode-lxd.commands.refresh": "Refresh",
     "vscode-lxd.commands.refreshInstances": "Refresh",
     "vscode-lxd.commands.refreshImages": "Refresh",
     "vscode-lxd.commands.refreshNetworks": "Refresh",

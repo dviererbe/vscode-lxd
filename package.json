@@ -40,6 +40,12 @@
     "contributes": {
         "commands": [
             {
+                "command": "vscode-lxd.commands.refresh",
+                "title": "%vscode-lxd.commands.refresh%",
+                "category": "%vscode-lxd.commands.categories.generic%",
+                "icon": "$(extensions-refresh)"
+            },
+            {
                 "command": "vscode-lxd.commands.refreshInstances",
                 "title": "%vscode-lxd.commands.refreshInstances%",
                 "category": "%vscode-lxd.commands.categories.instances%",

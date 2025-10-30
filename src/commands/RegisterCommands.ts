@@ -21,6 +21,10 @@ import { ExtensionVariables } from '../ExtensionVariables';
 export function RegisterCommands(context: vscode.ExtensionContext)
 {
 	context.subscriptions.push(vscode.commands.registerCommand(
+        "vscode-lxd.commands.refresh",
+        () => ExtensionVariables.LxdService.Refresh()));
+
+    context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.refreshInstances",
         () => ExtensionVariables.LxdService.RefreshInstances()));
 

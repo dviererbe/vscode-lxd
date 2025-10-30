@@ -2,7 +2,7 @@
     "name": "vscode-lxd",
     "displayName": "LXD",
     "description": "Makes it easy to create, manage, and inspect LXD containers.",
-    "version": "0.0.3-alpha",
+    "version": "0.0.3",
     "preview": true,
     "publisher": "dviererbe",
     "icon": "resources/extension-icon.png",

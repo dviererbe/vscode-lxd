@@ -17,16 +17,25 @@
 import * as vscode from "vscode";
 import { ILxdInstance } from "../../lxd/LxdService";
 import { ExtensionVariables } from "../../ExtensionVariables";
+import { Disposable } from "../../Disposable";
 
-export class LxdInstancesTreeDataProvider implements vscode.TreeDataProvider<ILxdInstance>
+export class LxdInstancesTreeDataProvider extends Disposable implements vscode.TreeDataProvider<ILxdInstance>
 {
-    private readonly _onDidChangeTreeData: vscode.EventEmitter<ILxdInstance[]>;
-    public readonly onDidChangeTreeData: vscode.Event<ILxdInstance[]>;
+    private readonly _onDidChangeTreeData: vscode.EventEmitter<void>;
+    public readonly onDidChangeTreeData: vscode.Event<void>;
 
     constructor()
     {
-        this._onDidChangeTreeData = new vscode.EventEmitter<ILxdInstance[]>();
+        super();
+        this._onDidChangeTreeData = this.RegisterDisposable(new vscode.EventEmitter<void>());
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
+
+        this.RegisterDisposable(ExtensionVariables.LxdService.OnDidChangeInstances(this.OnDidChangeInstances, this));
+    }
+
+    private OnDidChangeInstances(instances: ILxdInstance[])
+    {
+        this._onDidChangeTreeData.fire();
     }
 
     public getTreeItem(element: ILxdInstance): vscode.TreeItem

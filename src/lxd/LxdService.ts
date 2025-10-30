@@ -26,7 +26,9 @@ import { ExtensionVariables } from "../ExtensionVariables";
 export class LxdService extends Disposable
 {
     private _client: LxdClient | null = null;
-    private _instances: ILxdInstance[] = [];
+    private _instances: ILxdInstance[];
+    private readonly _onDidChangeInstances: vscode.EventEmitter<ILxdInstance[]>;
+    public readonly OnDidChangeInstances: vscode.Event<ILxdInstance[]>;
 
     public constructor()
     {
@@ -38,6 +40,10 @@ export class LxdService extends Disposable
             this.OnConfigurationChanges, // listener
             this) // thisArgs
         );
+
+        this._instances = [];
+        this._onDidChangeInstances = this.RegisterDisposable(new vscode.EventEmitter<ILxdInstance[]>());
+        this.OnDidChangeInstances = this._onDidChangeInstances.event;
 
         this.Refresh();
     }
@@ -166,7 +172,7 @@ export class LxdService extends Disposable
     {
         if (this.IsDisposed) return;
 
-        const section = `${ConfigKeys.NAMESPACE}.${ConfigKeys.LXD_DAEMON_SOCKET_PATH}`;
+        let section = `${ConfigKeys.NAMESPACE}.${ConfigKeys.LXD_DAEMON_SOCKET_PATH}`;
         if (event.affectsConfiguration(section))
         {
             this.InitializeClient(); // Um, actually... it re-initializes the client :P
@@ -184,6 +190,15 @@ export class LxdService extends Disposable
         }
 
         this._instances = await this._client.GetInstances();
+        ExtensionVariables.Logger.info(JSON.stringify(this._instances));
+        this._onDidChangeInstances.fire(this._instances);
+
+        let refreshIntervall =
+            vscode.workspace
+            .getConfiguration(ConfigKeys.NAMESPACE)
+            .get<number>(ConfigKeys.REFRESH_INTERVALL, 15);
+        if (refreshIntervall < 1) refreshIntervall = 1;
+        setTimeout(this.Refresh.bind(this), refreshIntervall * 1000);
     }
 
     public GetInstances(): ILxdInstance[]

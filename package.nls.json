@@ -2,6 +2,7 @@
     "vscode-lxd.configuration.title": "LXD",
     "vscode-lxd.configuration.properties.daemonUnixSocketPath.description": "Path of unix domain socket, which is used for querying the LXD daemon.",
     "vscode-lxd.configuration.properties.suppressUnsupportedEnvironmentErrors.description": "Do not show warnings that the environment is not supported.",
+    "vscode-lxd.configuration.properties.refreshInterval.description": "The time interval, in seconds, at which the data or view should be automatically refreshed.",
     "vscode-lxd.commands.categories.generic": "LXD",
     "vscode-lxd.commands.reportIssue": "Report an issue with the LXD extension...",
     "vscode-lxd.views.activitybar": "LXD",

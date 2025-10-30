@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Instance view displays instance status
+- Instance view is refreshed every 15 seconds.
+- Refresh intervall can be configured via the `lxd.refreshInterval` property-
+
 ### Fixed
 
 - Readme version badge links were swapped.
@@ -35,6 +41,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 A simple proof of concept that can lists all LXD instances.
 
 
-<!--[unreleased]: https://github.com/dviererbe/vscode-lxd/compare/v0.0.2...HEAD -->
+[unreleased]: https://github.com/dviererbe/vscode-lxd/compare/v0.0.2...HEAD
 [0.0.2]: https://github.com/dviererbe/vscode-lxd/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/dviererbe/vscode-lxd/releases/tag/v0.0.1

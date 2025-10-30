@@ -56,6 +56,12 @@
                         "scope": "machine",
                         "description": "%vscode-lxd.configuration.properties.daemonUnixSocketPath.description%"
                     },
+                    "lxd.refreshInterval": {
+                        "type": "integer",
+                        "default": 15,
+                        "scope": "window",
+                        "description": "%vscode-lxd.configuration.properties.refreshInterval.description%"
+                    },
                     "lxd.suppressUnsupportedEnvironmentErrors": {
                         "type": "boolean",
                         "default": false,

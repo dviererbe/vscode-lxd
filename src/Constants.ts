@@ -24,4 +24,5 @@ export namespace ConfigKeys
 
     export const LXD_DAEMON_SOCKET_PATH = "daemonUnixSocketPath";
     export const SUPPRESS_UNSUPPORTED_ENVIRONMENT_ERRORS = "suppressUnsupportedEnvironmentErrors";
+    export const REFRESH_INTERVALL= "refreshIntervall";
 };

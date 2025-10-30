@@ -66,47 +66,10 @@ jobs:
             vscode-lxd-${{ steps.check-version.outputs.version}}.vsix
             changes.md
 
-  github-release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      contents: write
-      discussions: write
-    steps:
-      - name: download build artifacts
-        uses: actions/download-artifact@v5
-        with:
-          name: release-files
-
-      - name: create GitHub release
-        env:
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: |
-          GH_OPTIONS=""
-          if [ "${{needs.build.outputs.preview }}" == "true" ]; then
-            GH_OPTIONS="$GH_OPTIONS --prerelease"
-          fi
-          
-          RELEASE_TITLE="Version ${{needs.build.outputs.version}}"
-          RELEASE_TAG="v${{needs.build.outputs.version}}"
-          RELEASE_ASSET="vscode-lxd-${{needs.build.outputs.version}}.vsix"
-          
-          gh release create \
-            "$RELEASE_TAG" \
-            "$RELEASE_ASSET" \
-            --verify-tag \
-            --fail-on-no-commits \
-            --title "$RELEASE_TITLE" \
-            --notes-file changes.md \
-            --discussion-category "Announcements" \
-            --repo "${{github.repository}}" \
-            $GH_OPTIONS
-
   extension-registry-release:
     name: Publish to Extension Registry
     runs-on: ubuntu-latest
-    needs: [build, github-release]
+    needs: build
     strategy:
       matrix:
         publisher: ['@vscode/vsce', 'ovsx']
@@ -141,3 +104,40 @@ jobs:
           npx ${{matrix.publisher}} publish \
             --packagePath vscode-lxd-${{needs.build.outputs.version}}.vsix
             --pat "$PAT"
+
+  github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [build,extension-registry-release]
+    permissions:
+      contents: write
+      discussions: write
+    steps:
+      - name: download build artifacts
+        uses: actions/download-artifact@v5
+        with:
+          name: release-files
+
+      - name: create GitHub release
+        env:
+          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          GH_OPTIONS=""
+          if [ "${{needs.build.outputs.preview }}" == "true" ]; then
+            GH_OPTIONS="$GH_OPTIONS --prerelease"
+          fi
+          
+          RELEASE_TITLE="Version ${{needs.build.outputs.version}}"
+          RELEASE_TAG="v${{needs.build.outputs.version}}"
+          RELEASE_ASSET="vscode-lxd-${{needs.build.outputs.version}}.vsix"
+          
+          gh release create \
+            "$RELEASE_TAG" \
+            "$RELEASE_ASSET" \
+            --verify-tag \
+            --fail-on-no-commits \
+            --title "$RELEASE_TITLE" \
+            --notes-file changes.md \
+            --discussion-category "Announcements" \
+            --repo "${{github.repository}}" \
+            $GH_OPTIONS

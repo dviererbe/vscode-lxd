@@ -92,18 +92,17 @@ jobs:
         # set Personal Access Token for https://dev.azure.com/dviererbe
       - name: set VS Code Marketplace Personal Access Token
         if: ${{matrix.publisher == '@vscode/vsce'}}
-        run: echo "PAT=${{secrets.VSCE_PAT}}" >> ${GITHUB_ENV}
+        run: echo "VSCE_PAT=${{secrets.VSCE_PAT}}" >> ${GITHUB_ENV}
         
         # set Personal Access Token for https://open-vsx.org/
       - name: set open-vsx.org Personal Access Token 
-        if: ${{matrix.publisher == 'osvx'}}
-        run: echo "PAT=${{secrets.OVSX_PAT}}" >> ${GITHUB_ENV}
+        if: ${{matrix.publisher == 'ovsx'}}
+        run: echo "OVSX_PAT=${{secrets.OVSX_PAT}}" >> ${GITHUB_ENV}
 
       - name: publish to VS Code marketplace
         run: |
           npx ${{matrix.publisher}} publish \
             --packagePath vscode-lxd-${{needs.build.outputs.version}}.vsix
-            --pat "$PAT"
 
   github-release:
     name: Create GitHub Release

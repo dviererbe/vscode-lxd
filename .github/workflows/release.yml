@@ -99,7 +99,6 @@ jobs:
             --fail-on-no-commits \
             --title "$RELEASE_TITLE" \
             --notes-file changes.md \
-            --draft \
             --discussion-category "Announcements" \
             "$GH_OPTIONS"
 

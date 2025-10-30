@@ -52,6 +52,12 @@
                 "icon": "$(extensions-refresh)"
             },
             {
+                "command": "vscode-lxd.commands.refreshNetworks",
+                "title": "%vscode-lxd.commands.refreshNetworks%",
+                "category": "%vscode-lxd.commands.categories.networks%",
+                "icon": "$(extensions-refresh)"
+            },
+            {
                 "command": "vscode-lxd.commands.reportIssue",
                 "title": "%vscode-lxd.commands.reportIssue%",
                 "category": "%vscode-lxd.commands.categories.generic%",
@@ -99,6 +105,11 @@
                     "command": "vscode-lxd.commands.refreshImages",
                     "when": "view == vscode-lxd.views.images",
                     "group": "navigation"
+                },
+                {
+                    "command": "vscode-lxd.commands.refreshNetworks",
+                    "when": "view == vscode-lxd.views.networks",
+                    "group": "navigation"
                 }
             ]
         },
@@ -121,6 +132,11 @@
                 {
                     "id": "vscode-lxd.views.images",
                     "name": "%vscode-lxd.views.images%",
+                    "icon": "resources/lxd-logo-outline.svg"
+                },
+                {
+                    "id": "vscode-lxd.views.networks",
+                    "name": "%vscode-lxd.views.networks%",
                     "icon": "resources/lxd-logo-outline.svg"
                 },
                 {

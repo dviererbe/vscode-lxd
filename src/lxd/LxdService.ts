@@ -26,14 +26,19 @@ import { ExtensionVariables } from "../ExtensionVariables";
 export class LxdService extends Disposable
 {
     private _client: LxdClient | null = null;
-    private _instances: ILxdInstance[] = [];
-    private _images: ILxdImage[] = [];
 
+    private _instances: ILxdInstance[] = [];
     private readonly _onDidChangeInstances: vscode.EventEmitter<ILxdInstance[]>;
     public readonly OnDidChangeInstances: vscode.Event<ILxdInstance[]>;
 
+    private _images: ILxdImage[] = [];
     private readonly _onDidChangeImages: vscode.EventEmitter<ILxdImage[]>;
     public readonly OnDidChangeImages: vscode.Event<ILxdImage[]>;
+
+    private _networks: ILxdNetwork[] = [];
+    private readonly _onDidChangeNetworks: vscode.EventEmitter<ILxdNetwork[]>;
+    public readonly OnDidChangeNetworks: vscode.Event<ILxdNetwork[]>;
+
 
     public constructor()
     {
@@ -51,6 +56,9 @@ export class LxdService extends Disposable
 
         this._onDidChangeImages = this.RegisterDisposable(new vscode.EventEmitter<ILxdImage[]>());
         this.OnDidChangeImages = this._onDidChangeImages.event;
+
+        this._onDidChangeNetworks = this.RegisterDisposable(new vscode.EventEmitter<ILxdNetwork[]>());
+        this.OnDidChangeNetworks = this._onDidChangeNetworks.event;
 
         this.Refresh();
     }
@@ -186,25 +194,56 @@ export class LxdService extends Disposable
         }
     }
 
-    public async Refresh()
+    public async RefreshInstances()
     {
         if (this.IsDisposed) return;
 
         if (this._client === null)
         {
-            this._instances = [];
-            this._images = [];
-
+            this.Instances = [];
             return;
         }
 
-        this._instances = await this._client.GetInstances();
-        ExtensionVariables.Logger.info(JSON.stringify(this._instances));
-        this._onDidChangeInstances.fire(this._instances);
+        this.Instances = await this._client.GetInstances();
+    }
 
-        this._images = await this._client.GetImages();
-        ExtensionVariables.Logger.info(JSON.stringify(this._images));
-        this._onDidChangeImages.fire(this._images);
+    public async RefreshImages()
+    {
+        if (this.IsDisposed) return;
+
+        if (this._client === null)
+        {
+            this.Images = [];
+            return;
+        }
+
+        this.Images = await this._client.GetImages();
+    }
+
+    public async RefreshNetworks()
+    {
+        if (this.IsDisposed) return;
+
+        if (this._client === null)
+        {
+            this.Networks = [];
+            return;
+        }
+
+        this.Networks = await this._client.GetNetworks();
+    }
+
+    public async Refresh()
+    {
+        if (this.IsDisposed) return;
+
+        let promises = [
+            this.RefreshInstances(),
+            this.RefreshImages(),
+            this.RefreshNetworks(),
+        ];
+
+        await Promise.all(promises);
 
         let refreshIntervall =
             vscode.workspace
@@ -214,14 +253,40 @@ export class LxdService extends Disposable
         setTimeout(this.Refresh.bind(this), refreshIntervall * 1000);
     }
 
-    public GetInstances(): ILxdInstance[]
+    public get Instances(): ILxdInstance[]
     {
         return this._instances;
     }
 
-    public GetImages(): ILxdImage[]
+    public set Instances(instances: ILxdInstance[])
+    {
+        this._instances = instances;
+        ExtensionVariables.Logger.info("instances updated: " + JSON.stringify(this._instances, null, 4));
+        this._onDidChangeInstances.fire(this._instances);
+    }
+
+    public get Images(): ILxdImage[]
     {
         return this._images;
+    }
+
+    public set Images(images: ILxdImage[])
+    {
+        this._images = images;
+        ExtensionVariables.Logger.info("images updated: " + JSON.stringify(this._images, null, 4));
+        this._onDidChangeImages.fire(this._images);
+    }
+
+    public get Networks(): ILxdNetwork[]
+    {
+        return this._networks;
+    }
+
+    private set Networks(networks: ILxdNetwork[])
+    {
+        this._networks = networks;
+        ExtensionVariables.Logger.info("networks updated: " + JSON.stringify(this._networks, null, 4));
+        this._onDidChangeNetworks.fire(this._networks);
     }
 }
 
@@ -234,4 +299,9 @@ export interface ILxdInstance
 export interface ILxdImage
 {
     readonly Fingerprint: string;
+}
+
+export interface ILxdNetwork
+{
+    readonly Name: string;
 }

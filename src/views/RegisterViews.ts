@@ -18,6 +18,7 @@ import * as vscode from 'vscode';
 import { HelpTreeDataProvider } from './help/HelpTreeDataProvider';
 import { LxdInstancesTreeDataProvider } from './instances/LxdInstancesTreeDataProvider';
 import { LxdImagesTreeDataProvider } from './images/LxdImagesTreeDataProvider';
+import { LxdNetworkTreeDataProvider } from './networks/LxdNetworksTreeDataProvider';
 
 export function RegisterViews(context: vscode.ExtensionContext)
 {
@@ -32,6 +33,13 @@ export function RegisterViews(context: vscode.ExtensionContext)
     "vscode-lxd.views.images",
     {
         treeDataProvider: new LxdImagesTreeDataProvider(),
+        canSelectMany: false,
+    }));
+
+    context.subscriptions.push(vscode.window.createTreeView(
+    "vscode-lxd.views.networks",
+    {
+        treeDataProvider: new LxdNetworkTreeDataProvider(),
         canSelectMany: false,
     }));
 

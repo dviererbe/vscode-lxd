@@ -54,7 +54,7 @@ export class LxdInstancesTreeDataProvider extends Disposable implements vscode.T
         }
         else
         {
-            return ExtensionVariables.LxdService.GetInstances();
+            return ExtensionVariables.LxdService.Instances;
         }
     }
 

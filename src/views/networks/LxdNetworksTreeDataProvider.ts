@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import * as vscode from "vscode";
-import { ILxdImage } from "../../lxd/LxdService";
+import { ILxdNetwork } from "../../lxd/LxdService";
 import { ExtensionVariables } from "../../ExtensionVariables";
 import { Disposable } from "../../Disposable";
 
-export class LxdImagesTreeDataProvider extends Disposable implements vscode.TreeDataProvider<ILxdImage>
+export class LxdNetworkTreeDataProvider extends Disposable implements vscode.TreeDataProvider<ILxdNetwork>
 {
     private readonly _onDidChangeTreeData: vscode.EventEmitter<void>;
     public readonly onDidChangeTreeData: vscode.Event<void>;
@@ -30,22 +30,22 @@ export class LxdImagesTreeDataProvider extends Disposable implements vscode.Tree
         this._onDidChangeTreeData = this.RegisterDisposable(new vscode.EventEmitter<void>());
         this.onDidChangeTreeData = this._onDidChangeTreeData.event;
 
-        this.RegisterDisposable(ExtensionVariables.LxdService.OnDidChangeImages(this.OnDidChangeImages, this));
+        this.RegisterDisposable(ExtensionVariables.LxdService.OnDidChangeNetworks(this.OnDidChangeNetworks, this));
     }
 
-    private OnDidChangeImages(instances: ILxdImage[])
+    private OnDidChangeNetworks(networks: ILxdNetwork[])
     {
         this._onDidChangeTreeData.fire();
     }
 
-    public getTreeItem(element: ILxdImage): vscode.TreeItem
+    public getTreeItem(element: ILxdNetwork): vscode.TreeItem
     {
-        const tree = new vscode.TreeItem(element.Fingerprint);
+        const tree = new vscode.TreeItem(element.Name);
 
         return tree;
     }
 
-    public getChildren(element?: ILxdImage | undefined): vscode.ProviderResult<ILxdImage[]>
+    public getChildren(element?: ILxdNetwork | undefined): vscode.ProviderResult<ILxdNetwork[]>
     {
         if (element)
         {
@@ -53,18 +53,18 @@ export class LxdImagesTreeDataProvider extends Disposable implements vscode.Tree
         }
         else
         {
-            return ExtensionVariables.LxdService.Images;
+            return ExtensionVariables.LxdService.Networks;
         }
     }
 
-    public getParent(element: ILxdImage): vscode.ProviderResult<ILxdImage>
+    public getParent(element: ILxdNetwork): vscode.ProviderResult<ILxdNetwork>
     {
         return null;
     }
 
     public resolveTreeItem(
         item: vscode.TreeItem,
-        element: ILxdImage,
+        element: ILxdNetwork,
         token: vscode.CancellationToken):
         vscode.ProviderResult<vscode.TreeItem>
     {

@@ -22,11 +22,15 @@ export function RegisterCommands(context: vscode.ExtensionContext)
 {
 	context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.refreshInstances",
-        RefreshInstances));
+        () => ExtensionVariables.LxdService.RefreshInstances()));
 
     context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.refreshImages",
-        RefreshImages));
+        () => ExtensionVariables.LxdService.RefreshImages()));
+
+    context.subscriptions.push(vscode.commands.registerCommand(
+        "vscode-lxd.commands.refreshNetworks",
+        () => ExtensionVariables.LxdService.RefreshNetworks()));
 
     context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.reportIssue",
@@ -58,14 +62,4 @@ Language: ${vscode.env.language}
 async function OpenUrl(url: string)
 {
 	await vscode.env.openExternal(vscode.Uri.parse(url));
-}
-
-async function RefreshInstances()
-{
-    await ExtensionVariables.LxdService.Refresh();
-}
-
-async function RefreshImages()
-{
-    await ExtensionVariables.LxdService.Refresh();
 }

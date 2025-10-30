@@ -16,10 +16,15 @@
 
 import * as vscode from 'vscode';
 import * as constants from "../Constants";
+import { ExtensionVariables } from '../ExtensionVariables';
 
 export function RegisterCommands(context: vscode.ExtensionContext)
 {
 	context.subscriptions.push(vscode.commands.registerCommand(
+        "vscode-lxd.commands.refreshInstances",
+        RefreshInstances));
+
+    context.subscriptions.push(vscode.commands.registerCommand(
         "vscode-lxd.commands.reportIssue",
         ReportIssue));
 
@@ -49,4 +54,9 @@ Language: ${vscode.env.language}
 async function OpenUrl(url: string)
 {
 	await vscode.env.openExternal(vscode.Uri.parse(url));
+}
+
+async function RefreshInstances()
+{
+    await ExtensionVariables.LxdService.Refresh();
 }

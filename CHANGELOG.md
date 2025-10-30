@@ -28,6 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   1. `$LXD_DIR/unix.socket`
   2. `/var/snap/lxd/common/lxd/unix.socket`
   3. `/var/lib/lxd/unix.socket`
+- refresh command for the instance view
+- refresh button for the instance view
 
 ### Changed
 

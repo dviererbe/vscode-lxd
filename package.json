@@ -40,6 +40,12 @@
     "contributes": {
         "commands": [
             {
+                "command": "vscode-lxd.commands.refreshInstances",
+                "title": "%vscode-lxd.commands.refreshInstances%",
+                "category": "%vscode-lxd.commands.categories.instances%",
+                "icon": "$(extensions-refresh)"
+            },
+            {
                 "command": "vscode-lxd.commands.reportIssue",
                 "title": "%vscode-lxd.commands.reportIssue%",
                 "category": "%vscode-lxd.commands.categories.generic%",
@@ -75,6 +81,13 @@
             "issue/reporter": [
                 {
                     "command": "vscode-lxd.commands.reportIssue"
+                }
+            ],
+            "view/title": [
+                {
+                    "command": "vscode-lxd.commands.refreshInstances",
+                    "when": "view == vscode-lxd.views.instances",
+                    "group": "navigation"
                 }
             ]
         },

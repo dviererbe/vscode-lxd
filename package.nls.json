@@ -4,6 +4,8 @@
     "vscode-lxd.configuration.properties.suppressUnsupportedEnvironmentErrors.description": "Do not show warnings that the environment is not supported.",
     "vscode-lxd.configuration.properties.refreshInterval.description": "The time interval, in seconds, at which the data or view should be automatically refreshed.",
     "vscode-lxd.commands.categories.generic": "LXD",
+    "vscode-lxd.commands.categories.instances": "LXD Instances",
+    "vscode-lxd.commands.refreshInstances": "Refresh",
     "vscode-lxd.commands.reportIssue": "Report an issue with the LXD extension...",
     "vscode-lxd.views.activitybar": "LXD",
     "vscode-lxd.views.instances": "Instances",

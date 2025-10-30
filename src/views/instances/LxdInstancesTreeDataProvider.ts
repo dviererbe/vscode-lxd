@@ -31,7 +31,10 @@ export class LxdInstancesTreeDataProvider implements vscode.TreeDataProvider<ILx
 
     public getTreeItem(element: ILxdInstance): vscode.TreeItem
     {
-        return new vscode.TreeItem(element.Name);
+        const tree = new vscode.TreeItem(element.Name);
+        tree.description = element.Status;
+
+        return tree;
     }
 
     public getChildren(element?: ILxdInstance | undefined): vscode.ProviderResult<ILxdInstance[]>

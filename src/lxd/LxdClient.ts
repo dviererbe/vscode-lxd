@@ -18,6 +18,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { Disposable } from '../Disposable';
 import { ExtensionVariables } from '../ExtensionVariables';
 import { LogLevel } from 'vscode';
+import { ILxdInstance } from './LxdService';
 
 export class LxdClient extends Disposable
 {
@@ -44,7 +45,7 @@ export class LxdClient extends Disposable
         return new LxdClient(client);
     }
 
-    async GetInstances(options?: GetLxdInstancesOptions): Promise<LxdInstanceIdentifier[]>
+    async GetInstances(options?: GetLxdInstancesOptions): Promise<ILxdInstance[]>
     {
         const requestOptions: AxiosRequestConfig =
         {
@@ -54,24 +55,18 @@ export class LxdClient extends Disposable
         };
 
         const response = await this.Request(requestOptions);
-        const uris: string[] = response.metadata;
+        const promises: Promise<LxdResponse>[] = response.metadata.map((uri: string) => this.Request({method: "GET", url: uri}));
 
-        return uris.map(uri =>
+        var responses = await Promise.all(promises);
+        return responses.map(response =>
         {
-            const prefix = "/1.0/instances/";
-            const url = new URL(uri, this.client.defaults.baseURL);
-
-            if (!url.pathname.startsWith(prefix))
+            const instance: ILxdInstance =
             {
-                throw new Error(`Instance uri (${uri}) does not start with '${prefix}'.`);
-            }
-
-            const instanceId: LxdInstanceIdentifier = {
-                Name: url.pathname.slice(prefix.length),
-                Project: url.searchParams.get("project"),
+                Name: response.metadata.name,
+                Status: response.metadata.status,
             };
 
-            return instanceId;
+            return instance;
         });
     }
 
@@ -157,12 +152,6 @@ export interface GetLxdInstancesOptions
     readonly "all-projects"?: boolean;
     readonly "project"?: string;
     readonly "filter"?: string;
-}
-
-export interface LxdInstanceIdentifier
-{
-    readonly Name: string;
-    readonly Project: string | null;
 }
 
 interface LxdResponse

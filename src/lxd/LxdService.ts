@@ -195,4 +195,5 @@ export class LxdService extends Disposable
 export interface ILxdInstance
 {
     readonly Name: string;
+    readonly Status: string;
 }
